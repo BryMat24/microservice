@@ -1,0 +1,37 @@
+version: "3.8"
+
+services:
+    cart-services:
+        container_name: cart-services
+        image: cart-service
+        build: .
+        ports:
+            - 6000:3000
+        volumes:
+            - .:/app
+            - /app/node_modules
+        networks:
+            - microservice
+        depends_on:
+            - cart-store
+        environment:
+            - REDIS_URL=${REDIS_URL}
+        env_file:
+            - .env
+
+    cart-store:
+        image: redis:7.4-rc2
+        networks:
+            - microservice
+        volumes:
+            - redis-data:/data
+        ports:
+            - 6379:6379
+
+networks:
+    microservice:
+        driver: bridge
+
+volumes:
+    redis-data:
+        driver: local
