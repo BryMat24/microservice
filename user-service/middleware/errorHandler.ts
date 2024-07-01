@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from "express";
+import { ZodError } from "zod";
 
 const errorHandler = (
     err: any,
@@ -11,10 +12,12 @@ const errorHandler = (
 
     if (err.name === "InvalidCredentials") {
         message = "Incorrect username/password";
-        code = 400;
+        code = 401;
     } else if (err.name === "UserNotFound") {
         message = "User has not been registered";
         code = 400;
+    } else if (err instanceof ZodError) {
+        message = err.issues[0]?.message;
     }
 
     res.status(code).json({ message });

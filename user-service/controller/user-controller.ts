@@ -1,9 +1,8 @@
 import { Request, Response, NextFunction } from "express";
-import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-
-const prisma = new PrismaClient();
+import { userSchema } from "../schema/user-schema";
+import prisma from "../prisma/client";
 
 class UserController {
     public static async login(req: Request, res: Response, next: NextFunction) {
@@ -46,6 +45,7 @@ class UserController {
     ) {
         try {
             const { name, email, password } = req.body;
+            userSchema.parse({ name, email, password });
             const salt = bcrypt.genSaltSync(10);
             const hash = bcrypt.hashSync(password, salt);
             await prisma.user.create({
