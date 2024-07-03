@@ -10,11 +10,11 @@ class ProductController {
     ) {
         try {
             const queryParams = querySchema.parse(req.query);
-            const product = await prisma.product.findMany({
+            const products = await prisma.product.findMany({
                 skip: (queryParams.page - 1) * 2,
                 take: 2,
             });
-            res.status(200).json(product);
+            res.status(200).json(products);
         } catch (err) {
             next(err);
         }
@@ -30,9 +30,9 @@ class ProductController {
             const product = await prisma.product.findUnique({
                 where: { id: Number(id) },
             });
+            if (!product) throw { name: "ProductNotFound" };
             res.status(200).json(product);
         } catch (err) {
-            console.log(err);
             next(err);
         }
     }

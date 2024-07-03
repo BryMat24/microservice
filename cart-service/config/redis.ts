@@ -1,11 +1,3 @@
-import { createClient } from "redis";
-
-const client = createClient({
-    url: "redis://cart-store:6379",
-});
-
-client.on("error", (err) => {
-    console.error("Redis connection error:", err);
-});
-
+import Redis from "ioredis";
+const client = new Redis(6379, "cart-store");
 export default client;

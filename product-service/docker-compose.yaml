@@ -21,4 +21,5 @@ services:
 
 networks:
     microservice:
-        driver: bridge
+        external: true
+        name: microservice
