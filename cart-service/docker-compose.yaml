@@ -16,6 +16,7 @@ services:
             - cart-store
         environment:
             - REDIS_URL=${REDIS_URL}
+            - JWT_SECRET=${JWT_SECRET}
         env_file:
             - .env
 

@@ -19,11 +19,10 @@ class UserController {
                 throw { name: "UserNotFound" };
             }
 
-            console.log(user);
             const match = await bcrypt.compare(password, user.password);
             if (match) {
                 const token = jwt.sign(
-                    { email, password },
+                    { id: user?.id, email },
                     process.env.JWT_SECRET as string
                 );
                 res.status(200).json({
