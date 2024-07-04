@@ -2,6 +2,7 @@ export type CartItem = {
     productId: number;
     quantity: number;
     name: string;
+    price: number;
 };
 
 export type ProductResponse = {

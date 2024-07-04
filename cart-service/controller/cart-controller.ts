@@ -19,6 +19,7 @@ class CartController {
                         productId: response.data.id,
                         quantity: Number(cartItems[key]),
                         name: response.data.name,
+                        price: response.data.price * Number(cartItems[key]),
                     };
                     return cartItem;
                 }
@@ -93,6 +94,16 @@ class CartController {
             await client.hdel(`cart:${userId}`, `product_id_${productId}`);
 
             res.status(200).json({ message: "item deleted successfully" });
+        } catch (err) {
+            next(err);
+        }
+    }
+
+    static async deleteCart(req: Request, res: Response, next: NextFunction) {
+        try {
+            const userId = req.userId;
+            await client.del(`cart:${userId}`);
+            res.status(200).json({ message: "Cart deleted successfully" });
         } catch (err) {
             next(err);
         }

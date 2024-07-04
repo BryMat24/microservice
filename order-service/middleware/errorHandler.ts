@@ -10,17 +10,22 @@ const errorHandler = (
     let message = "Internal server error";
     let code = 500;
 
+    console.log(err);
     if (axios.isAxiosError(err)) {
         message = err.response?.data.message;
         code = err.response?.status!;
     }
 
     if (err.name === "TokenNotFound") {
-        message = "Unauthorized: no token found";
+        message = "No2 token found";
         code = 400;
     }
 
-    console.log(err);
+    if (err.name === "JsonWebTokenError") {
+        message = "Invalid Token";
+        code = 400;
+    }
+
     res.status(code).json({ message });
 };
 
