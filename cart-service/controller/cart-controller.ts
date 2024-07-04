@@ -19,7 +19,7 @@ class CartController {
                         productId: response.data.id,
                         quantity: Number(cartItems[key]),
                         name: response.data.name,
-                        price: response.data.price * Number(cartItems[key]),
+                        subTotal: response.data.price * Number(cartItems[key]),
                     };
                     return cartItem;
                 }

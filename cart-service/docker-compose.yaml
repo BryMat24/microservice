@@ -16,6 +16,7 @@ services:
             - REDIS_URL=${REDIS_URL}
             - JWT_SECRET=${JWT_SECRET}
             - PRODUCT_SERVER=${PRODUCT_SERVER}
+            - REDIS_HOST=${REDIS_HOST}
         env_file:
             - .env
         networks:
