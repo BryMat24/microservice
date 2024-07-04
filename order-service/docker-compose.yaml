@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+    product-service:
+        container_name: order-service
+        image: order-service
+        build: .
+        ports:
+            - 5700:3000
+        networks:
+            - microservice
+        environment:
+            - DATABASE_URL=${DATABASE_URL}
+            - DIRECT_URL=${DIRECT_URL}
+            - JWT_SECRET=${JWT_SECRET}
+        env_file:
+            - .env
+        volumes:
+            - .:/app
+            - /app/node_modules
+        command: ["npm", "run", "dev"]
+
+networks:
+    microservice:
+        external: true
+        name: microservice

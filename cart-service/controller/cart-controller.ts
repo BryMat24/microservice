@@ -58,12 +58,12 @@ class CartController {
         try {
             const userId = req.userId;
             const { productId } = req.params;
-            const { status } = req.query;
+            let { status } = req.query;
 
             if (
                 !status ||
-                (+status != IncrementStatus.INCREMENT &&
-                    +status != IncrementStatus.DECREMENT)
+                (+status !== IncrementStatus.INCREMENT &&
+                    +status !== IncrementStatus.DECREMENT)
             ) {
                 throw { name: "Invalid increment status" };
             }
