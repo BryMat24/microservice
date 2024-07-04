@@ -2,7 +2,9 @@ export type CartItem = {
     productId: number;
     quantity: number;
     name: string;
-    subTotal: number;
+    price: number;
+    imageUrl: string;
+    stock: number;
 };
 
 export type ProductResponse = {

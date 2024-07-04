@@ -6,7 +6,7 @@ services:
         image: cart-service
         build: .
         ports:
-            - 6000:3000
+            - 6500:3000
         volumes:
             - .:/app
             - /app/node_modules

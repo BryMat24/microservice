@@ -17,9 +17,11 @@ class CartController {
                     );
                     const cartItem: CartItem = {
                         productId: response.data.id,
+                        imageUrl: response.data.imageUrl,
                         quantity: Number(cartItems[key]),
                         name: response.data.name,
-                        subTotal: response.data.price * Number(cartItems[key]),
+                        price: response.data.price,
+                        stock: response.data.stock,
                     };
                     return cartItem;
                 }
@@ -28,7 +30,16 @@ class CartController {
             const cartItemsWithDetails = await Promise.all(
                 fetchProductPromises
             );
-            res.status(200).json(cartItemsWithDetails);
+
+            const totalPrice = cartItemsWithDetails.reduce(
+                (acc, item) => acc + item.price * item.quantity,
+                0
+            );
+
+            res.status(200).json({
+                items: cartItemsWithDetails,
+                totalPrice,
+            });
         } catch (err) {
             next(err);
         }
