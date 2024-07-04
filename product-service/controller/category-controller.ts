@@ -9,7 +9,7 @@ class CategoryController {
     ) {
         try {
             const categories = await prisma.category.findMany();
-            res.status(200).json({ categories });
+            res.status(200).json(categories);
         } catch (err) {
             next(err);
         }
