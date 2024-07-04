@@ -17,12 +17,17 @@ const errorHandler = (
     }
 
     if (err.name === "TokenNotFound") {
-        message = "No2 token found";
-        code = 400;
+        message = "No token found";
+        code = 401;
     }
 
     if (err.name === "JsonWebTokenError") {
         message = "Invalid Token";
+        code = 401;
+    }
+
+    if (err.name === "CartEmptyError") {
+        message = "Invalid order request, cart is empty";
         code = 400;
     }
 

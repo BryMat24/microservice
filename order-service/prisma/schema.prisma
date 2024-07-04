@@ -20,6 +20,7 @@ model Order {
   totalPrice Float
   status     String
   orderItems OrderItem[]
+  userId     Int
 }
 
 model OrderItem {
