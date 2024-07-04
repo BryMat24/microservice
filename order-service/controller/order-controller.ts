@@ -2,52 +2,47 @@ import { NextFunction, Request, Response } from "express";
 import axios from "axios";
 import { extractToken } from "../helper/validateJwt";
 import prisma from "../prisma/client";
-import { Cart, CartItem } from "../types/cart-type";
+import { Cart, CartItem, OrderItem } from "../types/cart-type";
 import { OrderDetail, Product, OrderStatus } from "../types/order-type";
 
 class OrderController {
     static async createOrder(req: Request, res: Response, next: NextFunction) {
         try {
-            const { data } = await axios.get<Cart[]>(
+            const { data } = await axios.get<Cart>(
                 `${process.env.CART_SERVER!}/cart`,
                 {
                     headers: { Authorization: `Bearer ${extractToken(req)}` },
                 }
             );
 
-            if (data.length === 0) throw { name: "CartEmptyError" };
+            let cartData: CartItem[] = data.items;
+            if (cartData.length === 0) throw { name: "CartEmptyError" };
 
             await axios.delete(`${process.env.CART_SERVER!}/cart`, {
                 headers: { Authorization: `Bearer ${extractToken(req)}` },
             });
 
-            let totalPrice: number = data.reduce(
-                (accumulator: number, curr: Cart) =>
-                    accumulator + curr.subTotal,
-                0
-            );
-
             const order = await prisma.order.create({
                 data: {
                     status: OrderStatus.PENDING,
-                    totalPrice: totalPrice,
+                    totalPrice: data.totalPrice,
                     userId: Number(req.userId),
                 },
             });
 
-            let cartItems: CartItem[] = [];
-            data.forEach((el) => {
-                const cartItem: CartItem = {
+            let orderItems: OrderItem[] = [];
+            cartData.forEach((el) => {
+                const cartItem: OrderItem = {
                     productId: el.productId,
                     orderId: order.id,
                     quantity: el.quantity,
-                    subTotal: el.subTotal,
+                    subTotal: el.price * el.quantity,
                 };
-                cartItems.push(cartItem);
+                orderItems.push(cartItem);
             });
 
             await prisma.orderItem.createMany({
-                data: cartItems,
+                data: orderItems,
             });
 
             res.status(201).json(order);
