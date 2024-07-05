@@ -10,24 +10,20 @@ const errorHandler = (
     let message = "Internal server error";
     let code = 500;
 
-    console.log(err);
     if (axios.isAxiosError(err)) {
         message = err.response?.data.message;
         code = err.response?.status!;
-    }
-
-    if (err.name === "TokenNotFound") {
+    } else if (err.name === "TokenNotFound") {
         message = "No token found";
         code = 401;
-    }
-
-    if (err.name === "JsonWebTokenError") {
+    } else if (err.name === "JsonWebTokenError") {
         message = "Invalid Token";
         code = 401;
-    }
-
-    if (err.name === "CartEmptyError") {
+    } else if (err.name === "CartEmptyError") {
         message = "Invalid order request, cart is empty";
+        code = 400;
+    } else if (err.nmae === "InvalidOrderId") {
+        message = "Order Id is invalid";
         code = 400;
     }
 

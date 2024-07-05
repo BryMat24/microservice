@@ -1,11 +1,11 @@
 import express, { Router } from "express";
 import OrderController from "../controller/order-controller";
+import auth from "../middleware/auth";
 
 const router: Router = express.Router();
 
-router.get("/order", OrderController.getOrderHistory);
-router.post("/order", OrderController.createOrder);
-router.get("/order/:id", OrderController.getOrderDetail);
-router.post("/order/:id", OrderController.payOrder);
+router.get("/order", auth, OrderController.getOrderHistory);
+router.post("/order", auth, OrderController.createOrder);
+router.get("/order/:id", auth, OrderController.getOrderDetail);
 
 export default router;

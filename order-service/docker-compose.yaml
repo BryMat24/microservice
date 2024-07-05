@@ -13,6 +13,8 @@ services:
             - DATABASE_URL=${DATABASE_URL}
             - DIRECT_URL=${DIRECT_URL}
             - JWT_SECRET=${JWT_SECRET}
+            - STRIPE_API_KEY=${STRIPE_API_KEY}
+            - CLIENT_URL=${CLIENT_URL}
         env_file:
             - .env
         volumes:
