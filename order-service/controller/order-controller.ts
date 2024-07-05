@@ -90,7 +90,12 @@ class OrderController {
         }
     }
 
-    static async payOrder(req: Request, res: Response, next: NextFunction) {}
+    static async payOrder(req: Request, res: Response, next: NextFunction) {
+        try {
+        } catch (err) {
+            next(err);
+        }
+    }
 
     static async getOrderHistory(
         req: Request,

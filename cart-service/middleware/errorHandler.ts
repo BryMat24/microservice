@@ -17,10 +17,14 @@ const errorHandler = (
 
     if (err.name === "TokenNotFound") {
         message = "Unauthorized: no token found";
+        code = 401;
+    }
+
+    if (err.name === "InvalidStatus") {
+        message = "Invalid increment status";
         code = 400;
     }
 
-    console.log(err);
     res.status(code).json({ message });
 };
 

@@ -77,7 +77,7 @@ class CartController {
                 (+status !== IncrementStatus.INCREMENT &&
                     +status !== IncrementStatus.DECREMENT)
             ) {
-                throw { name: "Invalid increment status" };
+                throw { name: "InvalidStatus" };
             }
 
             const updatedQuantity = await client.hincrby(

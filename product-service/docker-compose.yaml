@@ -12,6 +12,7 @@ services:
         environment:
             - DATABASE_URL=${DATABASE_URL}
             - DIRECT_URL=${DIRECT_URL}
+            - PAGE_SIZE=${PAGE_SIZE}
         env_file:
             - .env
         volumes:

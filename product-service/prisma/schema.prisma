@@ -22,7 +22,7 @@ model Product {
   imageUrl    String
   stock       Int
   price       Float
-  Category    Category @relation(fields: [categoryId], references: [id])
+  category    Category @relation(fields: [categoryId], references: [id])
   categoryId  Int
 
   @@index(fields: [categoryId])

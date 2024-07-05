@@ -10,12 +10,29 @@ class ProductController {
     ) {
         try {
             const queryParams = querySchema.parse(req.query);
+            const filter: any = {};
+            if (queryParams.category) {
+                filter.category = {
+                    name: queryParams.category,
+                };
+            }
+
             const products = await prisma.product.findMany({
-                skip: (queryParams.page - 1) * 2,
-                take: 2,
+                skip: (queryParams.page - 1) * Number(process.env.PAGE_SIZE!),
+                take: Number(process.env.PAGE_SIZE!),
+                where: filter,
             });
-            res.status(200).json(products);
+
+            const totalProducts = await prisma.product.count();
+            const totalPages = Math.ceil(
+                totalProducts / Number(process.env.PAGE_SIZE!)
+            );
+            res.status(200).json({
+                products,
+                totalPages,
+            });
         } catch (err) {
+            console.log(err);
             next(err);
         }
     }
