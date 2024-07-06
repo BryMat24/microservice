@@ -14,6 +14,7 @@ services:
             - DIRECT_URL=${DIRECT_URL}
             - JWT_SECRET=${JWT_SECRET}
             - STRIPE_API_KEY=${STRIPE_API_KEY}
+            - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET}
             - CLIENT_URL=${CLIENT_URL}
         env_file:
             - .env

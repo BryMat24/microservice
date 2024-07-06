@@ -5,6 +5,7 @@ import prisma from "../prisma/client";
 import { Cart, CartItem, OrderItem } from "../types/cart-type";
 import { OrderDetail, Product, OrderStatus } from "../types/order-type";
 import Stripe from "stripe";
+import amqp from "amqplib";
 
 class OrderController {
     static async createOrder(req: Request, res: Response, next: NextFunction) {
@@ -125,7 +126,6 @@ class OrderController {
         next: NextFunction
     ) {
         try {
-            console.log("test");
             const stripe = require("stripe")(process.env.STRIPE_API_KEY);
             const sig = req.headers["stripe-signature"]!;
             let event: Stripe.Event;
@@ -150,6 +150,30 @@ class OrderController {
                     where: { id: Number(orderId) },
                     data: { status: OrderStatus.PAID },
                 });
+
+                const orderFulfilledEvent = {
+                    orderId: Number(orderId),
+                    status: OrderStatus.PAID,
+                };
+
+                const connection = await amqp.connect(
+                    process.env.RABBITMQ_URL!
+                );
+                const channel = await connection.createChannel();
+                const exchangeName = "order_events";
+                const routingKeyProductService = "product.orderFulfilled";
+                await channel.assertExchange(exchangeName, "topic", {
+                    durable: true,
+                });
+
+                channel.publish(
+                    exchangeName,
+                    routingKeyProductService,
+                    Buffer.from(JSON.stringify(orderFulfilledEvent))
+                );
+
+                await channel.close();
+                await connection.close();
             }
 
             res.sendStatus(200);
