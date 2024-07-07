@@ -13,6 +13,7 @@ services:
             - DATABASE_URL=${DATABASE_URL}
             - DIRECT_URL=${DIRECT_URL}
             - PAGE_SIZE=${PAGE_SIZE}
+            - RABBITMQ_URL=${RABBITMQ_URL}
         env_file:
             - .env
         volumes:

@@ -5,7 +5,7 @@ import prisma from "../prisma/client";
 import { Cart, CartItem, OrderItem } from "../types/cart-type";
 import { OrderDetail, Product, OrderStatus } from "../types/order-type";
 import Stripe from "stripe";
-import amqp from "amqplib";
+import { startProducer } from "../rabbitmq/producer";
 
 class OrderController {
     static async createOrder(req: Request, res: Response, next: NextFunction) {
@@ -143,7 +143,7 @@ class OrderController {
                 const session = event.data.object as Stripe.Checkout.Session;
                 const orderId = session.metadata?.orderId;
                 if (!orderId) {
-                    throw { name: "InvalidOrderId" };
+                    res.sendStatus(400);
                 }
 
                 await prisma.order.update({
@@ -151,33 +151,12 @@ class OrderController {
                     data: { status: OrderStatus.PAID },
                 });
 
-                const orderFulfilledEvent = {
-                    orderId: Number(orderId),
-                    status: OrderStatus.PAID,
-                };
-
-                const connection = await amqp.connect(
-                    process.env.RABBITMQ_URL!
-                );
-                const channel = await connection.createChannel();
-                const exchangeName = "order_events";
-                const routingKeyProductService = "product.orderFulfilled";
-                await channel.assertExchange(exchangeName, "topic", {
-                    durable: true,
-                });
-
-                channel.publish(
-                    exchangeName,
-                    routingKeyProductService,
-                    Buffer.from(JSON.stringify(orderFulfilledEvent))
-                );
-
-                await channel.close();
-                await connection.close();
+                startProducer(Number(orderId));
             }
 
             res.sendStatus(200);
         } catch (err) {
+            console.error("Error in stripeWebhook:", err);
             next(err);
         }
     }
