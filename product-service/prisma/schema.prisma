@@ -23,6 +23,7 @@ model Product {
   stock       Int
   price       Float
   category    Category @relation(fields: [categoryId], references: [id])
+  status      String   @default("available")
   categoryId  Int
 
   @@index(fields: [categoryId])

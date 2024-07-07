@@ -13,15 +13,14 @@ const errorHandler = (
     if (axios.isAxiosError(err)) {
         message = err.response?.data.message;
         code = err.response?.status!;
-    }
-
-    if (err.name === "TokenNotFound") {
+    } else if (err.name === "TokenNotFound") {
         message = "Unauthorized: no token found";
         code = 401;
-    }
-
-    if (err.name === "InvalidStatus") {
+    } else if (err.name === "InvalidStatus") {
         message = "Invalid increment status";
+        code = 400;
+    } else if (err.name === "ProductEmptyStock") {
+        message = "Product is not available";
         code = 400;
     }
 

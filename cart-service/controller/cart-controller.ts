@@ -53,6 +53,10 @@ class CartController {
                 `${process.env.PRODUCT_SERVER}/product/${productId}`
             );
 
+            if (data.status === "unavailable") {
+                throw { name: "ProductEmptyStock" };
+            }
+
             await client.hset(`cart:${req.userId}`, `product_id_${data.id}`, 1);
             res.status(200).json({
                 message: "Item successfully added to cart",

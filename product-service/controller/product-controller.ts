@@ -10,7 +10,10 @@ class ProductController {
     ) {
         try {
             const queryParams = querySchema.parse(req.query);
-            const filter: any = {};
+            const filter: any = {
+                status: "available",
+            };
+
             if (queryParams.category) {
                 filter.category = {
                     name: queryParams.category,

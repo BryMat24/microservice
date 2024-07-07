@@ -15,6 +15,7 @@ export type ProductResponse = {
     stock: number;
     price: number;
     categoryId: number;
+    status: string;
 };
 
 export enum IncrementStatus {

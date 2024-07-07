@@ -33,8 +33,11 @@ export async function startConsumer() {
                     });
 
                     if (updatedProduct.stock <= 0) {
-                        await prisma.product.delete({
+                        await prisma.product.update({
                             where: { id: productId },
+                            data: {
+                                status: "unavailable",
+                            },
                         });
                     }
                 }
