@@ -1,10 +1,10 @@
-import app from "../app";
+import app from "../src/app";
 import request from "supertest";
 import axios from "axios";
-import client from "../config/redis";
-import { IncrementStatus } from "../types/cart-type";
+import client from "../src/config/redis";
+import { IncrementStatus } from "../src/types/cart-type";
 
-jest.mock("../config/redis", () => {
+jest.mock("../src/config/redis", () => {
     return {
         __esModule: true,
         default: {
