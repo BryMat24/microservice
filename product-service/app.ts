@@ -15,6 +15,8 @@ app.use(express.json());
 app.use(router);
 app.use(errorHandler);
 
-app.listen(PORT, () => {
-    console.log(`Listening on port ${PORT}`);
-});
+if (process.env.NODE_ENV !== "test") {
+    app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
+}
+
+export default app;

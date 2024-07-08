@@ -35,7 +35,6 @@ class ProductController {
                 totalPages,
             });
         } catch (err) {
-            console.log(err);
             next(err);
         }
     }
