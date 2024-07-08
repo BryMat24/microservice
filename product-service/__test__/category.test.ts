@@ -1,9 +1,9 @@
 import { beforeEach } from "node:test";
 import request from "supertest";
-import app from "../app";
-import prisma from "../prisma/client";
+import app from "../src/app";
+import prisma from "../src/prisma/client";
 
-jest.mock("../prisma/client", () => {
+jest.mock("../src/prisma/client", () => {
     return {
         __esModule: true,
         default: {
