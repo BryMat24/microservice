@@ -108,7 +108,7 @@ class CartController {
             const { productId } = req.params;
             await client.hdel(`cart:${userId}`, `product_id_${productId}`);
 
-            res.status(200).json({ message: "item deleted successfully" });
+            res.status(200).json({ message: "Item deleted successfully" });
         } catch (err) {
             next(err);
         }
