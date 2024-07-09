@@ -13,8 +13,8 @@ app.use(express.json());
 app.use(router);
 app.use(errorHandler);
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`);
 });
 
-export default app;
+export { server, app };

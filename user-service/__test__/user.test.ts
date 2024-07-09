@@ -1,7 +1,7 @@
 import request from "supertest";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import app from "../src/app";
+import { server, app } from "../src/app";
 import prisma from "../src/prisma/client";
 
 jest.mock("../src/prisma/client", () => ({
@@ -20,6 +20,10 @@ jest.mock("jsonwebtoken", () => ({
 
 beforeEach(() => {
     jest.clearAllMocks();
+});
+
+afterAll(async () => {
+    server.close();
 });
 
 describe("Testing POST /user/login", () => {
