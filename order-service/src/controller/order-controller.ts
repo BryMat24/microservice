@@ -12,7 +12,7 @@ class OrderController {
         try {
             // create pending order
             const { data } = await axios.get<Cart>(
-                `${process.env.CART_SERVER!}/cart`,
+                `http://${process.env.CART_SERVER!}/cart`,
                 {
                     headers: { Authorization: `Bearer ${extractToken(req)}` },
                 }
@@ -20,7 +20,7 @@ class OrderController {
 
             let cartData: CartItem[] = data.items;
             if (cartData.length === 0) throw { name: "CartEmptyError" };
-            await axios.delete(`${process.env.CART_SERVER!}/cart`, {
+            await axios.delete(`http://${process.env.CART_SERVER!}/cart`, {
                 headers: { Authorization: `Bearer ${extractToken(req)}` },
             });
 
@@ -100,7 +100,8 @@ class OrderController {
                 orderItems.map(async (el) => {
                     const productId = el.productId;
                     const { data } = await axios.get<Product>(
-                        `${process.env.PRODUCT_SERVER!}/product/${productId}`
+                        `http://${process.env
+                            .PRODUCT_SERVER!}/product/${productId}`
                     );
 
                     totalPrice += el.subTotal;

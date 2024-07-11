@@ -16,6 +16,9 @@ services:
             - STRIPE_API_KEY=${STRIPE_API_KEY}
             - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET}
             - CLIENT_URL=${CLIENT_URL}
+            - PRODUCT_SERVER=${PRODUCT_SERVER}
+            - CART_SERVER=${CART_SERVER}
+            - RABBITMQ_URL=${RABBITMQ_URL}
         env_file:
             - .env
         volumes:
