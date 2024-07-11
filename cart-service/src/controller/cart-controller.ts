@@ -13,7 +13,7 @@ class CartController {
                 async (key) => {
                     const productId = key.split("_")[2];
                     const response = await axios.get<ProductResponse>(
-                        `${process.env.PRODUCT_SERVER}/product/${productId}`
+                        `http://${process.env.PRODUCT_SERVER}/product/${productId}`
                     );
                     const cartItem: CartItem = {
                         productId: response.data.id,
@@ -50,7 +50,7 @@ class CartController {
             const { productId } = req.params;
 
             const { data } = await axios.get<ProductResponse>(
-                `${process.env.PRODUCT_SERVER}/product/${productId}`
+                `http://${process.env.PRODUCT_SERVER}/product/${productId}`
             );
 
             if (data.status === "unavailable") {

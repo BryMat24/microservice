@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
     cart-service:
-        container_name: cart-services
+        container_name: cart-service
         image: cart-service
         build: .
         ports:
@@ -13,7 +13,6 @@ services:
         depends_on:
             - cart-store
         environment:
-            - REDIS_URL=${REDIS_URL}
             - JWT_SECRET=${JWT_SECRET}
             - PRODUCT_SERVER=${PRODUCT_SERVER}
             - REDIS_HOST=${REDIS_HOST}

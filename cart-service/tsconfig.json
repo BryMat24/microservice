@@ -9,6 +9,6 @@
         "forceConsistentCasingInFileNames": true,
         "typeRoots": ["./node_modules/@types", "src/types"]
     },
-    "include": ["./**/*.ts"],
+    "include": ["./**/*.ts", "src/config/redis.js"],
     "exclude": ["node_modules"]
 }
