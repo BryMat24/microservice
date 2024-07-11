@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: user-service-deployment
+    namespace: default
+spec:
+    selector:
+        matchLabels:
+            app: user-service-pod
+    replicas: 2
+    strategy:
+        rollingUpdate:
+            maxSurge: 25%
+            maxUnavailable: 25%
+        type: RollingUpdate
+    template:
+        metadata:
+            labels:
+                app: user-service-pod
+        spec:
+            containers:
+                - name: user-service-container
+                  image: brymat24/user-service:latest
+                  env:
+                      - name: JWT_SECRET
+                        valueFrom:
+                            secretKeyRef:
+                                name: user-service-secret
+                                key: JWT_SECRET
+                      - name: DIRECT_URL
+                        valueFrom:
+                            secretKeyRef:
+                                name: user-service-secret
+                                key: DIRECT_URL
+                      - name: DATABASE_URL
+                        valueFrom:
+                            secretKeyRef:
+                                name: user-service-secret
+                                key: DATABASE_URL
+                  ports:
+                      - containerPort: 3000
+            restartPolicy: Always
