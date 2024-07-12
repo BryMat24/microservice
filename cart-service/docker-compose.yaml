@@ -1,0 +1,42 @@
+version: "3.8"
+
+services:
+    cart-service:
+        container_name: cart-service
+        image: cart-service
+        build: .
+        ports:
+            - 6500:3000
+        volumes:
+            - .:/app
+            - /app/node_modules
+        depends_on:
+            - cart-store
+        environment:
+            - JWT_SECRET=${JWT_SECRET}
+            - PRODUCT_SERVER=${PRODUCT_SERVER}
+            - REDIS_HOST=${REDIS_HOST}
+        env_file:
+            - .env
+        networks:
+            - microservice
+        command: ["npm", "run", "dev"]
+
+    cart-store:
+        image: redis:7.4-rc2
+        container_name: cart-redis
+        volumes:
+            - redis-data:/data
+        ports:
+            - 6379:6379
+        networks:
+            - microservice
+
+networks:
+    microservice:
+        external: true
+        name: microservice
+
+volumes:
+    redis-data:
+        driver: local

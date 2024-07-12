@@ -1,26 +1,27 @@
 version: "3.8"
 
 services:
-    user-service:
-        image: user-service
-        container_name: user-service
+    product-service:
+        container_name: product-service
+        image: product-service
         build: .
         ports:
-            - 4000:3000
+            - 5500:3000
         networks:
             - microservice
         environment:
             - DATABASE_URL=${DATABASE_URL}
             - DIRECT_URL=${DIRECT_URL}
-            - JWT_SECRET=${JWT_SECRET}
+            - PAGE_SIZE=${PAGE_SIZE}
+            - RABBITMQ_URL=${RABBITMQ_URL}
         env_file:
             - .env
         volumes:
             - .:/app
             - /app/node_modules
-        command: npm run dev
+        command: ["npm", "run", "dev"]
 
 networks:
     microservice:
+        external: true
         name: microservice
-        driver: bridge

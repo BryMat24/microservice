@@ -1,0 +1,8 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+    name: order-service-configmap
+    namespace: default
+data:
+    PRODUCT_SERVER: product-service-svc.default.svc.cluster.local
+    CART_SERVER: cart-service-svc.default.svc.cluster.local

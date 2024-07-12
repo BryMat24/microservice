@@ -10,6 +10,4 @@ COPY . .
 
 EXPOSE 3000
 
-RUN npx prisma generate --schema=./src/prisma/schema.prisma
-
 CMD ["npm", "run", "dev"]
