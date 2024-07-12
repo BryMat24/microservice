@@ -60,7 +60,7 @@ spec:
                                 key: CART_SERVER
                       - name: RABBITMQ_URL
                         valueFrom:
-                            configMapKeyRef:
-                                name: order-service-configmap
+                            secretKeyRef:
+                                name: order-service-secret
                                 key: RABBITMQ_URL
             restartPolicy: Always
