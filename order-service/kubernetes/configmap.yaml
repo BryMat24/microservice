@@ -6,4 +6,3 @@ metadata:
 data:
     PRODUCT_SERVER: product-service-svc.default.svc.cluster.local
     CART_SERVER: cart-service-svc.default.svc.cluster.local
-    RABBITMQ_URL: amqp://rabbitmq
