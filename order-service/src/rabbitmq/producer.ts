@@ -16,7 +16,7 @@ export async function startProducer(orderId: number) {
             orderItems.map(async (el) => {
                 const productId = el.productId;
                 const { data } = await axios.get<Product>(
-                    `${process.env.PRODUCT_SERVER!}/product/${productId}`
+                    `http://${process.env.PRODUCT_SERVER!}/product/${productId}`
                 );
 
                 orderDetails.push({

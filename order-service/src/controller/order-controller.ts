@@ -18,6 +18,7 @@ class OrderController {
                 }
             );
 
+            console.log(data);
             let cartData: CartItem[] = data.items;
             if (cartData.length === 0) throw { name: "CartEmptyError" };
             await axios.delete(`http://${process.env.CART_SERVER!}/cart`, {
