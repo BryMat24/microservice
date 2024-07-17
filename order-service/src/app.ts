@@ -13,7 +13,7 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 app.post(
-    "/webhook",
+    "/order/webhook",
     express.raw({ type: "application/json" }),
     OrderController.stripeWebhook
 );

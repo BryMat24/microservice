@@ -24,17 +24,17 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry("", 'registry_credential_id') {
-                        sh "docker tag ${DOCKER_IMAGE} ${DOCKER_USERNAME}/${DOCKER_IMAGE}:${env.BUILD_NUMBER}"
-                        sh "docker push ${DOCKER_USERNAME}/${DOCKER_IMAGE}:${env.BUILD_NUMBER}"
+                        sh "docker tag ${DOCKER_IMAGE} ${DOCKER_USERNAME}/${DOCKER_IMAGE}:latest"
+                        sh "docker push ${DOCKER_USERNAME}/${DOCKER_IMAGE}:latest"
                     }
                 }
             }
         }
         stage('Deployment') {
             steps {
-                sh "sed -i 's/\${BUILD_NUMBER}/${env.BUILD_NUMBER}/g' deployment.yaml"
-                sh "kubectl apply -f deployment.yaml"
-                sh "kubectl apply -f service.yaml"
+                sh "kubectl apply -f ./kubernetes/deployment.yaml"
+                sh "kubectl apply -f ./kubernetes/service.yaml"
+                sh "kubectl apply -f ./kubernetes/sealed-secret.yaml"
             }
         }
     }
@@ -43,7 +43,7 @@ pipeline {
         always {
             sh "docker rm -f ${CONTAINER_NAME}"
             sh "docker rmi ${DOCKER_IMAGE}"
-            sh "docker rmi ${DOCKER_USERNAME}/${DOCKER_IMAGE}:${env.BUILD_NUMBER}"
+            sh "docker rmi ${DOCKER_USERNAME}/${DOCKER_IMAGE}:latest"
         }
     }
 }
